@@ -53,8 +53,178 @@
                     },
                     "clearance_id": {
                       "type": "string",
-                      "description": "The cryptographic ID from the tax authority (e.g., IRN or eTIMS Control Number)",
+                      "description": "The cryptographic ID from the tax authority",
                       "example": "SARS-99A8B7C6"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/directory/lookup/{vat_number}": {
+      "get": {
+        "summary": "Lookup Peppol Participant",
+        "description": "Checks whether a business (identified by their VAT number or Peppol ID) is registered on the Peppol directory and ready to receive e-invoices.",
+        "parameters": [
+          {
+            "name": "vat_number",
+            "in": "path",
+            "required": true,
+            "description": "Target VAT or Tax Identification Number",
+            "schema": {
+              "type": "string",
+              "example": "9123456789"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Participant status retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "registered": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "peppol_id": {
+                      "type": "string",
+                      "example": "9958:ZA9123456789"
+                    },
+                    "company_name": {
+                      "type": "string",
+                      "example": "Acme Retailers (Pty) Ltd"
+                    },
+                    "supported_document_types": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": ["ubl-2.1-invoice", "ubl-2.1-credit-note"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Participant not found on the Peppol network."
+          }
+        }
+      }
+    },
+    "/invoices/validate": {
+      "post": {
+        "summary": "Validate Invoice Schema",
+        "description": "Checks an invoice payload against UBL 2.1 syntax and regional tax authority business rules without submitting it to the government gateway.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "jurisdiction": {
+                    "type": "string",
+                    "example": "ZA-SARS"
+                  },
+                  "buyer_tin": {
+                    "type": "string",
+                    "example": "9123456789"
+                  },
+                  "total_amount": {
+                    "type": "number",
+                    "example": 1500.00
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validation result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "valid": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": []
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/entities": {
+      "post": {
+        "summary": "Register Legal Entity",
+        "description": "Registers a new merchant or sub-company under your master developer account to enable dynamic multi-tenant e-invoicing.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "company_name": {
+                    "type": "string",
+                    "example": "Apex Traders (Pty) Ltd"
+                  },
+                  "vat_number": {
+                    "type": "string",
+                    "example": "ZA4110293847"
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "ZA"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "finance@apextraders.co.za"
+                  }
+                },
+                "required": ["company_name", "vat_number", "country"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Legal entity created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "entity_id": {
+                      "type": "string",
+                      "example": "ent_9a8b7c6d5e"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "active"
+                    },
+                    "peppol_id": {
+                      "type": "string",
+                      "example": "9958:ZA4110293847"
                     }
                   }
                 }
