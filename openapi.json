@@ -1,0 +1,68 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Octothorp Peppol API",
+    "version": "1.0.0",
+    "description": "The headless API for African tax compliance. Route JSON transactions through government gateways instantly."
+  },
+  "servers": [
+    {
+      "url": "https://api.octothorp.online/v1"
+    }
+  ],
+  "paths": {
+    "/invoices/clear": {
+      "post": {
+        "summary": "Clear an Invoice",
+        "description": "Submits a standard JSON invoice payload, translates it to UBL 2.1 XML, and routes it to the designated government tax authority for cryptographic clearance.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "jurisdiction": {
+                    "type": "string",
+                    "example": "ZA-SARS"
+                  },
+                  "buyer_tin": {
+                    "type": "string",
+                    "example": "9123456789"
+                  },
+                  "total_amount": {
+                    "type": "number",
+                    "example": 1500.00
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully cleared by tax authority.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "cleared"
+                    },
+                    "clearance_id": {
+                      "type": "string",
+                      "description": "The cryptographic ID from the tax authority (e.g., IRN or eTIMS Control Number)",
+                      "example": "SARS-99A8B7C6"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
