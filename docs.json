@@ -1,18 +1,58 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "name": "Octothorp Peppol API",
+  "theme": "luma",
+  "name": "Octothorp",
+  "colors": {
+    "primary": "#0F172A",
+    "light": "#475569",
+    "dark": "#020617"
+  },
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "favicon": "/favicon.svg",
+  "navbar": {
+    "links": [
+      {
+        "href": "mailto:tech@octothorp.online",
+        "label": "Support"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Developer Dashboard",
+      "href": "https://peppol.octothorp.online"
+    }
   },
   "api": {
     "openapi": "openapi.json",
     "playground": {
-      "display": "show"
+      "display": "interactive"
     }
   },
+  "$schema": "https://mintlify.com/docs.json",
   "navigation": {
     "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "index",
+              "quickstart",
+              "authentication"
+            ]
+          },
+          {
+            "group": "Integration Guides",
+            "pages": [
+              "guides/nextjs",
+              "guides/webhooks"
+            ]
+          }
+        ]
+      },
       {
         "tab": "API Reference",
         "openapi": "openapi.json"
