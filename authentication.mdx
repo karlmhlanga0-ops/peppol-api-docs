@@ -1,0 +1,15 @@
+---
+title: "Authentication"
+description: "Secure your requests to the Octothorp API."
+---
+
+The Octothorp API uses Bearer tokens to authenticate requests. You can view and manage your API keys in the [Developer Dashboard](https://peppol.octothorp.online).
+
+Your API keys carry many privileges, so be sure to keep them secure. Do not share your secret API keys in publicly accessible areas such as GitHub, client-side code, and so forth.
+
+## Bearer Token
+
+Authentication to the API is performed via HTTP Bearer Auth. Provide your API key as the basic auth username value. You do not need to provide a password.
+
+```bash
+Authorization: Bearer <your-secret-key>
